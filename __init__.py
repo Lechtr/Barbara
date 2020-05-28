@@ -5,7 +5,7 @@ from mycroft.util.log import LOG
 
 from datetime import date
 
-
+# TODO: Fallback Skill einrichten
 
 class BarbaraSkill(MycroftSkill):
     def __init__(self):
@@ -49,7 +49,7 @@ class BarbaraSkill(MycroftSkill):
     @intent_file_handler('barbara.what.can.you.do.intent')
     def handle_barbara_what_can_you_do(self, message):
         # Fragen ob Beispielfragen gegeben werden sollen
-        give_examples = MycroftSkill.ask_yesno('barbara.ask.example.questions')
+        give_examples = self.ask_yesno('barbara.ask.example.questions')
 
         # Falls ja
         if give_examples:
@@ -58,7 +58,7 @@ class BarbaraSkill(MycroftSkill):
         else:
             # Anders weiterhelfen?
             # Ja
-            if MycroftSkill.ask_yesno('barbara.ask.can.I.help.otherwise'):
+            if self.ask_yesno('barbara.ask.can.I.help.otherwise'):
                 # TODO: hier als Prompt implementieren
                 self.speak_dialog('barbara.ask.what.dou.you.want.to.know')
             # Nein

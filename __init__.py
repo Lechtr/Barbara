@@ -45,20 +45,20 @@ class BarbaraSkill(MycroftSkill):
         age = date.today() - self.initial_date
         self.speak_dialog('barbara.I.am.old', {'age': age.days})
 
-
+    # TODO: hier ask_yesno die Antworten prüfen, muss Ja zu yes?
     @intent_file_handler('barbara.what.can.you.do.intent')
     def handle_barbara_what_can_you_do(self, message):
         # Fragen ob Beispielfragen gegeben werden sollen
         give_examples = self.ask_yesno('barbara.ask.example.questions')
 
         # Falls ja
-        if give_examples:
+        if give_examples == "Ja":
             self.speak_dialog('barbara.example.questions')
         # Falls Nein
         else:
             # Anders weiterhelfen?
             # Ja
-            if self.ask_yesno('barbara.ask.can.I.help.otherwise'):
+            if self.ask_yesno('barbara.ask.can.I.help.otherwise') == "Ja":
                 # TODO: hier als Prompt implementieren
                 self.speak_dialog('barbara.ask.what.dou.you.want.to.know')
             # Nein

@@ -58,7 +58,7 @@ class BarbaraSkill(MycroftSkill):
         else:
             # Anders weiterhelfen?
             # Ja
-            if MycroftSkill.ask_yesno('barbara.ask.can.I.help.otherwise')
+            if MycroftSkill.ask_yesno('barbara.ask.can.I.help.otherwise'):
                 # TODO: hier als Prompt implementieren
                 self.speak_dialog('barbara.ask.what.dou.you.want.to.know')
             # Nein

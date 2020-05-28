@@ -3,10 +3,15 @@ from mycroft.audio import wait_while_speaking
 from mycroft.skills.context import *
 from mycroft.util.log import LOG
 
+from datetime import date
+
+
 
 class BarbaraSkill(MycroftSkill):
     def __init__(self):
         MycroftSkill.__init__(self)
+        # Aufstellungsdatum, für die Altersberechnung
+        self.initial_date = date(2020, 5, 28)
 
     def initialize(self):
         # Word entity ist Platzhalter für beliebieges Wort
@@ -14,9 +19,60 @@ class BarbaraSkill(MycroftSkill):
         # self.parser = WiktionaryParser()
 
 
+    ### normale Frage-Antwort-Intents ###
+
     @intent_file_handler('barbara.what.is.name.intent')
     def handle_barbara_name(self, message):
         self.speak_dialog('barbara.name.introduction')
+
+    @intent_file_handler('barbara.how.are.you.intent')
+    def handle_barbara_how_are_you(self, message):
+        self.speak_dialog('barbara.I.feel.fine')
+
+    @intent_file_handler('barbara.who.are.you.intent')
+    def handle_barbara_who_are_you(self, message):
+        self.speak_dialog('barbara.I.am')
+
+    @intent_file_handler('barbara.why.are.you.here.intent')
+    def handle_barbara_why_are_you_here(self, message):
+        self.speak_dialog('barbara.I.am.here.because')
+
+
+
+    ### komplexere Intents ###
+    @intent_file_handler('barbara.how.old.are.you.intent')
+    def handle_barbara_how_old(self, message):
+        age = date.today() - self.initial_date
+        self.speak_dialog('barbara.I.am.old', {'age': age.days})
+
+
+    @intent_file_handler('barbara.what.can.you.do.intent')
+    def handle_barbara_what_can_you_do(self, message):
+        # Fragen ob Beispielfragen gegeben werden sollen
+        give_examples = MycroftSkill.ask_yesno('barbara.ask.example.questions')
+
+        # Falls ja
+        if give_examples:
+            self.speak_dialog('barbara.example.questions')
+        # Falls Nein
+        else:
+            # Anders weiterhelfen?
+            # Ja
+            if MycroftSkill.ask_yesno('barbara.ask.can.I.help.otherwise')
+                # TODO: hier als Prompt implementieren
+                self.speak_dialog('barbara.ask.what.dou.you.want.to.know')
+            # Nein
+            else:
+                self.speak_dialog('barbara.goodbye')
+
+
+
+
+
+
+
+
+
 
     # @intent_file_handler('fallback.wiktionary.definition.intent')
     # def handle_wiktionary_definition(self, message):
